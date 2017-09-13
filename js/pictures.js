@@ -4,6 +4,7 @@ var LIKES_MIN = 15;
 var LIKES_MAX = 200;
 var PICTURES_VALUE = 25;
 
+
 var comments = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -65,14 +66,15 @@ var x = createPhoto(PICTURES_VALUE);
 var template = document.querySelector('#picture-template').content;
 var picturesContainer = document.querySelector('.pictures');
 var galleryOverlay = document.querySelector('.gallery-overlay');
-galleryOverlay.classList.remove('hidden');
+var pictures = document.querySelector('.pictures');
 
+// Функция отрисовки фотографии
 function renderPhoto(array) {
   var photoElement = template.cloneNode(true);
   photoElement.querySelector('img').src = array.url;
   photoElement.querySelector('.picture-likes').textContent = array.likes;
-  photoElement.querySelector('.picture-comments').textContent =
-    array.comments.length;
+  photoElement.querySelector('.picture-comments').textContent = array.comments.length;
+  photoElement.querySelector('.picture').setAttribute('tabindex', '0');
   return photoElement;
 }
 
@@ -82,10 +84,75 @@ for (var i = 0; i < x.length; i++) {
 }
 picturesContainer.appendChild(fragment);
 
+
+var photoCollection = document.querySelectorAll('.picture');
+
+// Отрисовка увеличенной фотографии
 function pasteNewData(array) {
   galleryOverlay.querySelector('img').src = array.url;
   galleryOverlay.querySelector('.likes-count').textContent = array.likes;
-  galleryOverlay.querySelector('.comments-count').textContent =
-    array.comments.length;
+  galleryOverlay.querySelector('.comments-count').textContent = array.comments.length;
 }
-pasteNewData(x[0]);
+
+
+// закрытие окна
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+var closeElement = document.querySelector('.gallery-overlay-close');
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    window.closePopup();
+  }
+};
+
+window.openPopup = function () {
+  galleryOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+  // Функция закрытия окна диалога
+window.closePopup = function () {
+  galleryOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+ // Закрытие окна диалоги при клике
+closeElement.addEventListener('click', function () {
+  galleryOverlay.classList.add('hidden');
+});
+
+  // Закрытие окна диалоги при нажатии клавиатуры
+closeElement.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    galleryOverlay.classList.add('hidden');
+  }
+});
+
+
+// функция отрисовки текущей фотографии
+
+function renderCurrentPhoto(target) {
+  var newArray = Array.prototype.slice.call(photoCollection).indexOf(target.parentNode);
+  pasteNewData(x[newArray]);
+}
+
+// Действие при клике мышкой на фотографии
+pictures.addEventListener('click', function (evt) {
+  var target = evt.target;
+  if (target.parentNode.classList.contains('picture')) {
+    evt.preventDefault();
+    renderCurrentPhoto(target);
+    window.openPopup();
+  }
+});
+
+// Действие при нажатии кнопки на фотографии
+pictures.addEventListener('keydown', function (evt) {
+  var target = evt.target.childNodes[0];
+  if (target.parentNode.classList.contains('picture') && evt.keyCode === 13) {
+    evt.preventDefault();
+    renderCurrentPhoto(target);
+    window.openPopup();
+  }
+});
