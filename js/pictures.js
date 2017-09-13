@@ -131,7 +131,6 @@ closeElement.addEventListener('keydown', function (evt) {
 
 
 // функция отрисовки текущей фотографии
-
 function renderCurrentPhoto(target) {
   var newArray = Array.prototype.slice.call(photoCollection).indexOf(target.parentNode);
   pasteNewData(x[newArray]);
@@ -154,5 +153,50 @@ pictures.addEventListener('keydown', function (evt) {
     evt.preventDefault();
     renderCurrentPhoto(target);
     window.openPopup();
+  }
+});
+
+// Работа с кадрированием
+var uploadForm = document.querySelector('#upload-select-image');
+var uploadFileInput = uploadForm.querySelector('#upload-file');
+var uploadImage = uploadForm.querySelector('.upload-image');
+var uploadOverlay = uploadForm.querySelector('.upload-overlay');
+var uploadFileInput = uploadForm.querySelector('#upload-file');
+var uploadCancel = uploadForm.querySelector('.upload-form-cancel');
+
+
+var onOverlayEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    window.closeOverlay();
+  }
+};
+
+window.openOverlay = function () {
+  uploadImage.classList.add('hidden');
+  uploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onOverlayEscPress);
+};
+
+  // Функция закрытия окна диалога
+window.closeOverlay = function () {
+  uploadImage.classList.remove('hidden');
+  uploadOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', onOverlayEscPress);
+};
+
+uploadFileInput.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  window.openOverlay();
+
+});
+
+uploadCancel.addEventListener('click', function (evt) {
+  window.closeOverlay();
+});
+
+// Закрытие окна диалоги при нажатии клавиатуры
+uploadCancel.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    window.closeOverlay();
   }
 });
