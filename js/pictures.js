@@ -171,7 +171,8 @@ var uploadDescription = uploadForm.querySelector('.upload-form-description');
 var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
 var resizeDec = uploadForm.querySelector('.upload-resize-controls-button-dec');
 var resizeInc = uploadForm.querySelector('.upload-resize-controls-button-inc');
-
+var effectPreview = uploadForm.querySelector('.effect-image-preview');
+var effectNone = uploadForm.querySelector('#upload-effect-none');
 
 var onOverlayEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE && uploadDescription !== document.activeElement) {
@@ -189,6 +190,7 @@ window.openOverlay = function () {
 window.closeOverlay = function () {
   uploadImage.classList.remove('hidden');
   uploadOverlay.classList.add('hidden');
+  setOriginalFilter();
   document.removeEventListener('keydown', onOverlayEscPress);
 };
 
@@ -206,6 +208,7 @@ uploadCancel.addEventListener('click', function (evt) {
 uploadCancel.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     window.closeOverlay();
+    setOriginalFilter();
   }
 });
 
@@ -242,4 +245,19 @@ resizeInc.addEventListener('click', function (evt) {
     var newResizeValue = parseInt(resizeValue.value, 10) + STEP + '%';
     resizeValue.value = newResizeValue;
   }
+});
+
+// наложение фильтров
+var effectControls = uploadForm.querySelector('.upload-effect-controls');
+
+function setOriginalFilter() {
+  if (effectPreview.className != 'effect-image-preview') {
+    effectPreview.setAttribute('class', 'effect-image-preview');
+  }
+}
+
+effectControls.addEventListener('click', function (evt) {
+  setOriginalFilter();
+  var x = evt.target.id.slice(7);
+  effectPreview.className += ' ' + x;
 });
