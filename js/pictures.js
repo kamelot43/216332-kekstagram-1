@@ -231,19 +231,30 @@ uploadDescription.addEventListener('input', function () {
   validateTextInput(uploadDescription, MAX_COMMENT_LENGTH);
 });
 
+// масштабирование
+function resizeImage(element) {
+  var x = 'scale' + '\(' + (element / 100) + '\)';
+  effectPreview.style.transform = '';
+  effectPreview.style.transform += ' ' + x;
+}
+
 // масштабирование -
 resizeDec.addEventListener('click', function (evt) {
   if (parseInt(resizeValue.value, 10) > RESIZE_MIN) {
-    var newResizeValue = parseInt(resizeValue.value, 10) - STEP + '%';
-    resizeValue.value = newResizeValue;
+    var newResizeValue = parseInt(resizeValue.value, 10) - STEP;
+    resizeValue.value = newResizeValue + '%';
+    resizeImage(newResizeValue);
   }
 });
+
 
 // масштабирование +
 resizeInc.addEventListener('click', function (evt) {
   if (parseInt(resizeValue.value, 10) < RESIZE_MAX) {
-    var newResizeValue = parseInt(resizeValue.value, 10) + STEP + '%';
-    resizeValue.value = newResizeValue;
+    var newResizeValue = parseInt(resizeValue.value, 10) + STEP;
+    resizeValue.value = newResizeValue + '%';
+    resizeImage(newResizeValue);
+
   }
 });
 
