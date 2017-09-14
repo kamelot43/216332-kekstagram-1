@@ -3,6 +3,10 @@
 var LIKES_MIN = 15;
 var LIKES_MAX = 200;
 var PICTURES_VALUE = 25;
+var MAX_COMMENT_LENGTH = 140;
+var STEP = 25;
+var RESIZE_MIN = 25;
+var RESIZE_MAX = 100;
 
 
 var comments = [
@@ -163,10 +167,14 @@ var uploadImage = uploadForm.querySelector('.upload-image');
 var uploadOverlay = uploadForm.querySelector('.upload-overlay');
 var uploadFileInput = uploadForm.querySelector('#upload-file');
 var uploadCancel = uploadForm.querySelector('.upload-form-cancel');
+var uploadDescription = uploadForm.querySelector('.upload-form-description');
+var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
+var resizeDec = uploadForm.querySelector('.upload-resize-controls-button-dec');
+var resizeInc = uploadForm.querySelector('.upload-resize-controls-button-inc');
 
 
 var onOverlayEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
+  if (evt.keyCode === ESC_KEYCODE && uploadDescription !== document.activeElement) {
     window.closeOverlay();
   }
 };
@@ -198,5 +206,40 @@ uploadCancel.addEventListener('click', function (evt) {
 uploadCancel.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     window.closeOverlay();
+  }
+});
+
+
+// валидация формы
+
+function validateTextInput(input, maxValue) {
+  if (input.value.length > maxValue) {
+    input.setCustomValidity(
+        'Максимальная длина комментария - ' + maxValue + ' ' + 'символов'
+    );
+    input.style.borderColor = 'red';
+  } else {
+    input.setCustomValidity('');
+    input.style.borderColor = '';
+  }
+}
+
+uploadDescription.addEventListener('input', function () {
+  validateTextInput(uploadDescription, MAX_COMMENT_LENGTH);
+});
+
+// масштабирование -
+resizeDec.addEventListener('click', function (evt) {
+  if (parseInt(resizeValue.value, 10) > RESIZE_MIN) {
+    var newResizeValue = parseInt(resizeValue.value, 10) - STEP + '%';
+    resizeValue.value = newResizeValue;
+  }
+});
+
+// масштабирование +
+resizeInc.addEventListener('click', function (evt) {
+  if (parseInt(resizeValue.value, 10) < RESIZE_MAX) {
+    var newResizeValue = parseInt(resizeValue.value, 10) + STEP + '%';
+    resizeValue.value = newResizeValue;
   }
 });
