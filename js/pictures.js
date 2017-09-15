@@ -173,6 +173,8 @@ var resizeDec = uploadForm.querySelector('.upload-resize-controls-button-dec');
 var resizeInc = uploadForm.querySelector('.upload-resize-controls-button-inc');
 var effectPreview = uploadForm.querySelector('.effect-image-preview');
 var effectNone = uploadForm.querySelector('#upload-effect-none');
+var uploadHashtags = uploadForm.querySelector('.upload-form-hashtags');
+
 
 var onOverlayEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE && uploadDescription !== document.activeElement) {
@@ -191,6 +193,8 @@ window.closeOverlay = function () {
   uploadImage.classList.remove('hidden');
   uploadOverlay.classList.add('hidden');
   setOriginalFilter();
+  resizeImage();
+  resetResizer();
   document.removeEventListener('keydown', onOverlayEscPress);
 };
 
@@ -208,7 +212,6 @@ uploadCancel.addEventListener('click', function (evt) {
 uploadCancel.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     window.closeOverlay();
-    setOriginalFilter();
   }
 });
 
@@ -238,6 +241,10 @@ function resizeImage(element) {
   effectPreview.style.transform += ' ' + x;
 }
 
+function resetResizer() {
+  resizeValue.value = '100%';
+}
+
 // масштабирование -
 resizeDec.addEventListener('click', function (evt) {
   if (parseInt(resizeValue.value, 10) > RESIZE_MIN) {
@@ -261,14 +268,52 @@ resizeInc.addEventListener('click', function (evt) {
 // наложение фильтров
 var effectControls = uploadForm.querySelector('.upload-effect-controls');
 
+// Установить оригинальный фильтр
 function setOriginalFilter() {
   if (effectPreview.className != 'effect-image-preview') {
     effectPreview.setAttribute('class', 'effect-image-preview');
   }
 }
 
+// Применить выбранный фильтр
 effectControls.addEventListener('click', function (evt) {
   setOriginalFilter();
   var x = evt.target.id.slice(7);
   effectPreview.className += ' ' + x;
+});
+
+// Вспомогательная функция
+var filter = function (array) {
+  for (var i = 0; i < array.length; i++) {
+    for (var j = i + 1; j < array.length; j++) {
+      if (array[j] === array[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+};
+
+
+function validateHashTags(input) {
+  var x = input.value.split(' ');
+  for (var i = 0; i < x.length; i++) {
+    if (x[i].charAt(0) > '#' && x[i].indexOf(' ') === -1) {
+      input.classList.add('upload-message-error');
+      input.setCustomValidity('#хештег должен начинаться с символа # и не должен содержать пробел');
+    } else if (x[i].indexOf('#', 1) != -1) {
+      input.classList.add('upload-message-error');
+      input.setCustomValidity('#хештеги должны быть разделены пробелом');
+    } else if (filter(x)) {
+      input.classList.add('upload-message-error');
+      input.setCustomValidity('#хештеги повторяются');
+    } else {
+      input.setCustomValidity('');
+      input.classList.remove('upload-message-error');
+    }
+  }
+}
+
+uploadHashtags.addEventListener('change', function () {
+  validateHashTags(uploadHashtags);
 });
