@@ -4,6 +4,8 @@ var LIKES_MIN = 15;
 var LIKES_MAX = 200;
 var PICTURES_VALUE = 25;
 var MAX_COMMENT_LENGTH = 140;
+var MAX_HASHTAGS_QUANTITY = 5;
+var MAX_HASHTAG_LENGTH = 20;
 var STEP = 25;
 var RESIZE_MIN = 25;
 var RESIZE_MAX = 100;
@@ -282,8 +284,8 @@ effectControls.addEventListener('click', function (evt) {
   effectPreview.className += ' ' + x;
 });
 
-// Вспомогательная функция
-var filter = function (array) {
+// Найти одинаковые хештеги
+var findSameElement = function (array) {
   for (var i = 0; i < array.length; i++) {
     for (var j = i + 1; j < array.length; j++) {
       if (array[j] === array[i]) {
@@ -294,19 +296,35 @@ var filter = function (array) {
   }
 };
 
+// Измерить длину хештега
+function findHashTagLength(array) {
+  for (var i = 0; i < array.length; i++) {
+    if (array[i].length > MAX_HASHTAG_LENGTH) {
+      return true;
+    }
+  }
+  return false;
+}
+
 
 function validateHashTags(input) {
-  var x = input.value.split(' ');
-  for (var i = 0; i < x.length; i++) {
-    if (x[i].charAt(0) > '#' && x[i].indexOf(' ') === -1) {
+  var newArrays = input.value.split(' ');
+  for (var i = 0; i < newArrays.length; i++) {
+    if (newArrays[i].charAt(0) != '#' && newArrays[i].indexOf(' ') === -1) {
       input.classList.add('upload-message-error');
       input.setCustomValidity('#хештег должен начинаться с символа # и не должен содержать пробел');
-    } else if (x[i].indexOf('#', 1) != -1) {
+    } else if (newArrays[i].indexOf('#', 1) != -1) {
       input.classList.add('upload-message-error');
       input.setCustomValidity('#хештеги должны быть разделены пробелом');
-    } else if (filter(x)) {
+    } else if (findHashTagLength(newArrays)) {
+      input.classList.add('upload-message-error');
+      input.setCustomValidity('длина #хештега превышает допустимую');
+    } else if (findSameElement(newArrays)) {
       input.classList.add('upload-message-error');
       input.setCustomValidity('#хештеги повторяются');
+    } else if (x.length > MAX_HASHTAGS_QUANTITY) {
+      input.classList.add('upload-message-error');
+      input.setCustomValidity('указано более 5 #хештегов');
     } else {
       input.setCustomValidity('');
       input.classList.remove('upload-message-error');
