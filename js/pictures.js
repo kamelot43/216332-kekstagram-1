@@ -176,6 +176,7 @@ var resizeInc = uploadForm.querySelector('.upload-resize-controls-button-inc');
 var effectPreview = uploadForm.querySelector('.effect-image-preview');
 var effectNone = uploadForm.querySelector('#upload-effect-none');
 var uploadHashtags = uploadForm.querySelector('.upload-form-hashtags');
+var uploadSubmit = uploadForm.querySelector('.upload-form-submit');
 
 
 var onOverlayEscPress = function (evt) {
@@ -185,8 +186,6 @@ var onOverlayEscPress = function (evt) {
 };
 
 window.openOverlay = function () {
-  uploadImage.classList.add('hidden');
-  uploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onOverlayEscPress);
 };
 
@@ -195,13 +194,13 @@ window.closeOverlay = function () {
   uploadImage.classList.remove('hidden');
   uploadOverlay.classList.add('hidden');
   setOriginalFilter();
-  resizeImage();
   resetResizer();
   document.removeEventListener('keydown', onOverlayEscPress);
 };
 
 uploadFileInput.addEventListener('click', function (evt) {
-  evt.preventDefault();
+  uploadImage.classList.add('hidden');
+  uploadOverlay.classList.remove('hidden');
   window.openOverlay();
 
 });
@@ -306,6 +305,16 @@ function findHashTagLength(array) {
   return false;
 }
 
+// Очистка формы после отправки
+function resetForm(form) {
+  form.submit();
+  setTimeout(function () {
+    form.reset();
+    setOriginalFilter();
+    resetResizer();
+  }, 100);
+}
+
 
 function validateHashTags(input) {
   var newArrays = input.value.split(' ');
@@ -313,25 +322,44 @@ function validateHashTags(input) {
     if (newArrays[i].charAt(0) != '#' && newArrays[i].indexOf(' ') === -1) {
       input.classList.add('upload-message-error');
       input.setCustomValidity('#хештег должен начинаться с символа # и не должен содержать пробел');
+
     } else if (newArrays[i].indexOf('#', 1) != -1) {
       input.classList.add('upload-message-error');
       input.setCustomValidity('#хештеги должны быть разделены пробелом');
+
     } else if (findHashTagLength(newArrays)) {
       input.classList.add('upload-message-error');
       input.setCustomValidity('длина #хештега превышает допустимую');
+
     } else if (findSameElement(newArrays)) {
       input.classList.add('upload-message-error');
       input.setCustomValidity('#хештеги повторяются');
-    } else if (x.length > MAX_HASHTAGS_QUANTITY) {
+
+    } else if (newArrays.length > MAX_HASHTAGS_QUANTITY) {
       input.classList.add('upload-message-error');
       input.setCustomValidity('указано более 5 #хештегов');
+
     } else {
       input.setCustomValidity('');
       input.classList.remove('upload-message-error');
+
     }
   }
 }
 
 uploadHashtags.addEventListener('change', function () {
   validateHashTags(uploadHashtags);
+});
+
+// Закрытие окна кадрирования при нажатии клавиатуры
+uploadSubmit.addEventListener('submit', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    evt.preventDefault();
+    resetForm(uploadForm);
+  }
+});
+
+uploadForm.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  resetForm(uploadForm);
 });

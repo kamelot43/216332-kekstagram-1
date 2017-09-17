@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans&subset=latin,cyrillic">
   <link rel="stylesheet" href="css/main.css">
-  <!--<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">-->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кекстаграм</title>
 </head>
 <body>
@@ -26,9 +26,10 @@
 
 <form class="upload-form" id="upload-select-image" method="post"
       enctype="multipart/form-data"
+      action="https://1510.dump.academy/kekstagram"
       autocomplete="off">
   <div class="upload-image">
-    <input type="file" id="upload-file" class="upload-input" name="filename" required>
+    <input type="file" id="upload-file" class="upload-input" name="filename" required >
     <label class="upload-file upload-control" for="upload-file"></label>
   </div>
 
@@ -96,10 +97,10 @@
 
       <input class="upload-form-hashtags" name="hashtags" placeholder="#хэш-тег">
 
-      <textarea class="upload-form-description" name="description" maxlength="140" placeholder="Ваш комментарий..." ></textarea>
+      <textarea class="upload-form-description" name="description"  placeholder="Ваш комментарий..." ></textarea>
 
       <button class="upload-form-cancel" type="reset" id="upload-cancel"></button>
-      <button class="upload-form-submit" type="submit" id="upload-submit">Отправить</button>
+      <button class="upload-form-submit" type="submit" id="upload-submit" tabindex="0" >Отправить</button>
     </div>
   </div>
 
