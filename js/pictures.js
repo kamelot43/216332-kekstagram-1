@@ -176,6 +176,7 @@ var resizeInc = uploadForm.querySelector('.upload-resize-controls-button-inc');
 var effectPreview = uploadForm.querySelector('.effect-image-preview');
 var effectNone = uploadForm.querySelector('#upload-effect-none');
 var uploadHashtags = uploadForm.querySelector('.upload-form-hashtags');
+
 var uploadSubmit = uploadForm.querySelector('.upload-form-submit');
 
 
@@ -350,6 +351,7 @@ function validateHashTags(input) {
 uploadHashtags.addEventListener('change', function () {
   validateHashTags(uploadHashtags);
 });
+
 
 // Закрытие окна кадрирования при нажатии клавиатуры
 uploadSubmit.addEventListener('submit', function (evt) {
