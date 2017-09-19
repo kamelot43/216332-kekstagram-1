@@ -56,4 +56,50 @@
     }
   });
 
+  // работа с ползунком фильтра
+  var levelPin = document.querySelector('.upload-effect-level-pin');
+  var levelVal = document.querySelector('.upload-effect-level-val');
+
+
+  levelPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX
+      };
+
+      startCoords = {
+        x: moveEvt.clientX
+      };
+
+      var maxClientX = 450;
+      var minClientX = 0;
+
+      if ((levelPin.offsetLeft - shift.x) <= maxClientX && (levelPin.offsetLeft - shift.x) >= minClientX) {
+        levelPin.style.left = (levelPin.offsetLeft - shift.x) + 'px';
+        levelVal.style.width = (levelPin.offsetLeft - shift.x) + 'px';
+      }
+
+    };
+
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+
+  });
+
 })();
