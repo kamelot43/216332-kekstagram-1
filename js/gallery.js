@@ -4,6 +4,7 @@
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
   var closeElement = document.querySelector('.gallery-overlay-close');
+  var uploadForm = document.querySelector('#upload-select-image');
 
   // закрытие окна
   var onPopupEscPress = function (evt) {
@@ -82,10 +83,35 @@
       var maxClientX = 450;
       var minClientX = 0;
 
+
+      function test(param) {
+        var x = ((levelPin.offsetLeft - shift.x) / maxClientX) * 100;
+        var result = x.toFixed(2);
+        if (param == 'effect-phobos') {
+          var z = (3 * result) / 100;
+          return z.toFixed(1) + 'px';
+        }
+        return result + '%';
+      }
+
+
       if ((levelPin.offsetLeft - shift.x) <= maxClientX && (levelPin.offsetLeft - shift.x) >= minClientX) {
         levelPin.style.left = (levelPin.offsetLeft - shift.x) + 'px';
         levelVal.style.width = (levelPin.offsetLeft - shift.x) + 'px';
+        if (window.x == 'effect-sepia') {
+
+          window.effectPreview.style.filter = 'sepia' + '\(' + test(window.x) + '\)';
+        } else if (window.x == 'effect-chrome') {
+
+          window.effectPreview.style.filter = 'grayscale' + '\(' + test(window.x) + '\)';
+        } else if (window.x == 'effect-marvin') {
+          window.effectPreview.style.filter = 'invert' + '\(' + test(window.x) + '\)';
+        } else if (window.x == 'effect-phobos') {
+          window.effectPreview.style.filter = 'blur' + '\(' + test(window.x) + '\)';
+        }
+
       }
+
 
     };
 
@@ -95,6 +121,7 @@
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
+
     };
 
     document.addEventListener('mousemove', onMouseMove);

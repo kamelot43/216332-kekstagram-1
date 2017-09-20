@@ -350,6 +350,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 .upload-effect-level-line {
   height: 5px;
 
+
   position: absolute;
   left: 20px;
   right: 20px;
@@ -364,6 +365,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   height: 18px;
 
   position: absolute;
+  left: 20%;
   top: 50%;
 
   margin: -9px 0 0;
@@ -376,6 +378,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 
 .upload-effect-level-val {
   height: 100%;
+  width: 20%;
 
   position: absolute;
 

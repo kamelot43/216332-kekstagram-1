@@ -19,10 +19,15 @@
   var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
   var resizeDec = uploadForm.querySelector('.upload-resize-controls-button-dec');
   var resizeInc = uploadForm.querySelector('.upload-resize-controls-button-inc');
-  var effectPreview = uploadForm.querySelector('.effect-image-preview');
+  window.effectPreview = uploadForm.querySelector('.effect-image-preview');
   var uploadHashtags = uploadForm.querySelector('.upload-form-hashtags');
+  var uploadEffect = uploadForm.querySelector('.upload-effect-level');
 
   var uploadSubmit = uploadForm.querySelector('.upload-form-submit');
+
+  // работа с ползунком фильтра
+  var levelPin = document.querySelector('.upload-effect-level-pin');
+  var levelVal = document.querySelector('.upload-effect-level-val');
 
 
   var onOverlayEscPress = function (evt) {
@@ -103,14 +108,37 @@
   function setOriginalFilter() {
     if (effectPreview.className !== 'effect-image-preview') {
       effectPreview.setAttribute('class', 'effect-image-preview');
+      effectPreview.style.filter = '';
+    }
+  }
+
+  // Установить значение фильтров по умолчанию
+  function setDefaultFilterValue(param) {
+    if (param == 'effect-sepia') {
+      window.effectPreview.style.filter = 'sepia(20%)';
+    } else if (param == 'effect-chrome') {
+      window.effectPreview.style.filter = 'grayscale(20%)';
+    } else if (param == 'effect-marvin') {
+      window.effectPreview.style.filter = 'invert(20%)';
+    } else if (param == 'effect-phobos') {
+      window.effectPreview.style.filter = 'blur(2.1px)';
     }
   }
 
   // Применить выбранный фильтр
   effectControls.addEventListener('click', function (evt) {
     setOriginalFilter();
-    var x = evt.target.id.slice(7);
-    effectPreview.className += ' ' + x;
+    levelPin.style.left = '20%';
+    levelVal.style.width = '20%';
+
+    window.x = evt.target.id.slice(7);
+    window.effectPreview.className += ' ' + window.x;
+    setDefaultFilterValue(window.x);
+  });
+
+  // Устранение бага с исчезновение фильтра
+  uploadEffect.addEventListener('click', function (evt) {
+    evt.stopPropagation();
   });
 
   // Найти одинаковые хештеги
