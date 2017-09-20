@@ -112,16 +112,28 @@
     }
   }
 
+  // по умолчанию скрыть ползунок
+  uploadEffect.classList.add('hidden');
+
   // Установить значение фильтров по умолчанию
   function setDefaultFilterValue(param) {
     if (param == 'effect-sepia') {
+      uploadEffect.classList.remove('hidden');
       window.effectPreview.style.filter = 'sepia(20%)';
     } else if (param == 'effect-chrome') {
+      uploadEffect.classList.remove('hidden');
       window.effectPreview.style.filter = 'grayscale(20%)';
     } else if (param == 'effect-marvin') {
+      uploadEffect.classList.remove('hidden');
       window.effectPreview.style.filter = 'invert(20%)';
     } else if (param == 'effect-phobos') {
-      window.effectPreview.style.filter = 'blur(2.1px)';
+      uploadEffect.classList.remove('hidden');
+      window.effectPreview.style.filter = 'blur(0.6px)';
+    } else if (param == 'effect-heat') {
+      uploadEffect.classList.remove('hidden');
+      window.effectPreview.style.filter = 'brightness(60%)';
+    } else {
+      uploadEffect.classList.add('hidden');
     }
   }
 

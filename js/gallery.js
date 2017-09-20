@@ -84,12 +84,15 @@
       var minClientX = 0;
 
 
-      function test(param) {
-        var x = ((levelPin.offsetLeft - shift.x) / maxClientX) * 100;
-        var result = x.toFixed(2);
+      function findRatio(param) {
+        var percent = ((levelPin.offsetLeft - shift.x) / maxClientX) * 100;
+        var result = percent.toFixed(2);
         if (param == 'effect-phobos') {
-          var z = (3 * result) / 100;
-          return z.toFixed(1) + 'px';
+          var result = (3 * result) / 100;
+          return result.toFixed(1) + 'px';
+        } else if (param == 'effect-heat') {
+          var result = (300 * result) / 100;
+          return result.toFixed(2) + '%';
         }
         return result + '%';
       }
@@ -100,14 +103,16 @@
         levelVal.style.width = (levelPin.offsetLeft - shift.x) + 'px';
         if (window.x == 'effect-sepia') {
 
-          window.effectPreview.style.filter = 'sepia' + '\(' + test(window.x) + '\)';
+          window.effectPreview.style.filter = 'sepia' + '\(' + findRatio(window.x) + '\)';
         } else if (window.x == 'effect-chrome') {
 
-          window.effectPreview.style.filter = 'grayscale' + '\(' + test(window.x) + '\)';
+          window.effectPreview.style.filter = 'grayscale' + '\(' + findRatio(window.x) + '\)';
         } else if (window.x == 'effect-marvin') {
-          window.effectPreview.style.filter = 'invert' + '\(' + test(window.x) + '\)';
+          window.effectPreview.style.filter = 'invert' + '\(' + findRatio(window.x) + '\)';
         } else if (window.x == 'effect-phobos') {
-          window.effectPreview.style.filter = 'blur' + '\(' + test(window.x) + '\)';
+          window.effectPreview.style.filter = 'blur' + '\(' + findRatio(window.x) + '\)';
+        } else if (window.x == 'effect-heat') {
+          window.effectPreview.style.filter = 'brightness' + '\(' + findRatio(window.x) + '\)';
         }
 
       }
