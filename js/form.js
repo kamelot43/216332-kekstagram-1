@@ -16,7 +16,8 @@
   var uploadOverlay = uploadForm.querySelector('.upload-overlay');
   var uploadCancel = uploadForm.querySelector('.upload-form-cancel');
   var uploadDescription = uploadForm.querySelector('.upload-form-description');
-  var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
+  // var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
+  var scaleElement = document.querySelector('.upload-resize-controls');
   var resizeDec = uploadForm.querySelector('.upload-resize-controls-button-dec');
   var resizeInc = uploadForm.querySelector('.upload-resize-controls-button-inc');
   window.effectPreview = uploadForm.querySelector('.effect-image-preview');
@@ -73,33 +74,12 @@
   // масштабирование
   function resizeImage(element) {
     var x = 'scale' + '\(' + (element / 100) + '\)';
-    effectPreview.style.transform = '';
-    effectPreview.style.transform += ' ' + x;
+    effectPreview.style.transform = x;
   }
 
   function resetResizer() {
     resizeValue.value = '100%';
   }
-
-  // масштабирование -
-  resizeDec.addEventListener('click', function (evt) {
-    if (parseInt(resizeValue.value, 10) > RESIZE_MIN) {
-      var newResizeValue = parseInt(resizeValue.value, 10) - STEP;
-      resizeValue.value = newResizeValue + '%';
-      resizeImage(newResizeValue);
-    }
-  });
-
-
-  // масштабирование +
-  resizeInc.addEventListener('click', function (evt) {
-    if (parseInt(resizeValue.value, 10) < RESIZE_MAX) {
-      var newResizeValue = parseInt(resizeValue.value, 10) + STEP;
-      resizeValue.value = newResizeValue + '%';
-      resizeImage(newResizeValue);
-
-    }
-  });
 
   // наложение фильтров
   var effectControls = uploadForm.querySelector('.upload-effect-controls');
@@ -143,9 +123,9 @@
     levelPin.style.left = '20%';
     levelVal.style.width = '20%';
 
-    window.x = evt.target.id.slice(7);
-    window.effectPreview.className += ' ' + window.x;
-    setDefaultFilterValue(window.x);
+    window.y = evt.target.id.slice(7);
+    window.effectPreview.className += ' ' + window.y;
+    setDefaultFilterValue(window.y);
   });
 
   // Устранение бага с исчезновение фильтра
@@ -235,4 +215,8 @@
     evt.preventDefault();
     resetForm(uploadForm);
   });
+
+  // module5-task3
+
+  window.initializeScale(scaleElement, resizeImage);
 })();
