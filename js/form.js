@@ -16,10 +16,11 @@
   var uploadOverlay = uploadForm.querySelector('.upload-overlay');
   var uploadCancel = uploadForm.querySelector('.upload-form-cancel');
   var uploadDescription = uploadForm.querySelector('.upload-form-description');
-  // var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
+  var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
   var scaleElement = document.querySelector('.upload-resize-controls');
   var resizeDec = uploadForm.querySelector('.upload-resize-controls-button-dec');
   var resizeInc = uploadForm.querySelector('.upload-resize-controls-button-inc');
+  var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
   window.effectPreview = uploadForm.querySelector('.effect-image-preview');
   var uploadHashtags = uploadForm.querySelector('.upload-form-hashtags');
   var uploadEffect = uploadForm.querySelector('.upload-effect-level');
@@ -47,6 +48,7 @@
     uploadOverlay.classList.add('hidden');
     setOriginalFilter();
     resetResizer();
+    uploadEffect.classList.add('hidden');
     document.removeEventListener('keydown', onOverlayEscPress);
   };
 
@@ -79,17 +81,21 @@
 
   function resetResizer() {
     resizeValue.value = '100%';
+    window.effectPreview.style.transform = '';
   }
 
   // наложение фильтров
   var effectControls = uploadForm.querySelector('.upload-effect-controls');
 
   // Установить оригинальный фильтр
-  function setOriginalFilter() {
-    if (effectPreview.className !== 'effect-image-preview') {
-      effectPreview.setAttribute('class', 'effect-image-preview');
+  function setOriginalFilter(param) {
+    levelPin.style.left = '20%';
+    levelVal.style.width = '20%';
+    if (window.effectPreview.className !== 'effect-image-preview') {
+      window.effectPreview.setAttribute('class', 'effect-image-preview');
       effectPreview.style.filter = '';
     }
+    window.effectPreview.className += ' ' + param;
   }
 
   // по умолчанию скрыть ползунок
@@ -117,16 +123,6 @@
     }
   }
 
-  // Применить выбранный фильтр
-  effectControls.addEventListener('click', function (evt) {
-    setOriginalFilter();
-    levelPin.style.left = '20%';
-    levelVal.style.width = '20%';
-
-    window.y = evt.target.id.slice(7);
-    window.effectPreview.className += ' ' + window.y;
-    setDefaultFilterValue(window.y);
-  });
 
   // Устранение бага с исчезновение фильтра
   uploadEffect.addEventListener('click', function (evt) {
@@ -219,4 +215,6 @@
   // module5-task3
 
   window.initializeScale(scaleElement, resizeImage);
+  window.initializeFilters(effectControls, setOriginalFilter);
+  window.initializeFilters(effectControls, setDefaultFilterValue);
 })();

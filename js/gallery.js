@@ -102,12 +102,9 @@
         levelPin.style.left = (levelPin.offsetLeft - shift.x) + 'px';
         levelVal.style.width = (levelPin.offsetLeft - shift.x) + 'px';
         if (window.y == 'effect-sepia') {
-
-
           window.effectPreview.style.filter = 'sepia' + '\(' + findRatio(window.y) + '\)';
         } else if (window.y == 'effect-chrome') {
-
-          window.effectPreview.style.filter = 'grayscale' + '\(' + findRatio(window.x) + '\)';
+          window.effectPreview.style.filter = 'grayscale' + '\(' + findRatio(window.y) + '\)';
         } else if (window.y == 'effect-marvin') {
           window.effectPreview.style.filter = 'invert' + '\(' + findRatio(window.y) + '\)';
         } else if (window.y == 'effect-phobos') {
