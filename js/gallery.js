@@ -101,18 +101,19 @@
       if ((levelPin.offsetLeft - shift.x) <= maxClientX && (levelPin.offsetLeft - shift.x) >= minClientX) {
         levelPin.style.left = (levelPin.offsetLeft - shift.x) + 'px';
         levelVal.style.width = (levelPin.offsetLeft - shift.x) + 'px';
-        if (window.x == 'effect-sepia') {
+        if (window.y == 'effect-sepia') {
 
-          window.effectPreview.style.filter = 'sepia' + '\(' + findRatio(window.x) + '\)';
-        } else if (window.x == 'effect-chrome') {
+
+          window.effectPreview.style.filter = 'sepia' + '\(' + findRatio(window.y) + '\)';
+        } else if (window.y == 'effect-chrome') {
 
           window.effectPreview.style.filter = 'grayscale' + '\(' + findRatio(window.x) + '\)';
-        } else if (window.x == 'effect-marvin') {
-          window.effectPreview.style.filter = 'invert' + '\(' + findRatio(window.x) + '\)';
-        } else if (window.x == 'effect-phobos') {
-          window.effectPreview.style.filter = 'blur' + '\(' + findRatio(window.x) + '\)';
-        } else if (window.x == 'effect-heat') {
-          window.effectPreview.style.filter = 'brightness' + '\(' + findRatio(window.x) + '\)';
+        } else if (window.y == 'effect-marvin') {
+          window.effectPreview.style.filter = 'invert' + '\(' + findRatio(window.y) + '\)';
+        } else if (window.y == 'effect-phobos') {
+          window.effectPreview.style.filter = 'blur' + '\(' + findRatio(window.y) + '\)';
+        } else if (window.y == 'effect-heat') {
+          window.effectPreview.style.filter = 'brightness' + '\(' + findRatio(window.y) + '\)';
         }
 
       }
