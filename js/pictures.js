@@ -27,7 +27,13 @@
       }
       window.picturesContainer.appendChild(fragment);
       window.photoCollection = document.querySelectorAll('.picture');
-    }
+    },
+
+    deletePhoto: function () {
+      Array.prototype.forEach.call(window.picturesContainer.querySelectorAll('.picture'), function (element) {
+        window.picturesContainer.removeChild(element);
+      });
+    },
   };
 
 
