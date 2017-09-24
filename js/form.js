@@ -154,12 +154,11 @@
 
   // Очистка формы после отправки
   function resetForm(form) {
-    form.submit();
-    setTimeout(function () {
-      form.reset();
-      setOriginalFilter();
-      resetResizer();
-    }, 100);
+    form.reset();
+    setOriginalFilter();
+    resetResizer();
+    window.closeOverlay();
+
   }
 
 
@@ -202,19 +201,39 @@
   // Закрытие окна кадрирования при нажатии клавиатуры
   uploadSubmit.addEventListener('submit', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
+      window.backend.save(
+          new FormData(uploadForm),
+          function () {
+            resetForm(uploadForm);
+          },
+          window.backend.error
+      );
       evt.preventDefault();
-      resetForm(uploadForm);
     }
   });
 
-  uploadForm.addEventListener('submit', function (evt) {
+  /* uploadForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     resetForm(uploadForm);
   });
+  */
 
   // module5-task3
 
   window.initializeScale(scaleElement, resizeImage);
   window.initializeFilters(effectControls, setOriginalFilter);
   window.initializeFilters(effectControls, setDefaultFilterValue);
+
+
+  // Отправка по сети данных формы методом AJAX
+  uploadForm.addEventListener('submit', function (evt) {
+    window.backend.save(
+        new FormData(uploadForm),
+        function () {
+          resetForm(uploadForm);
+        },
+        window.backend.error
+    );
+    evt.preventDefault();
+  });
 })();

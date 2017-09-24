@@ -14,7 +14,7 @@
     // функция отрисовки текущей фотографии
     renderCurrentPhoto: function (target) {
       var newArray = Array.prototype.slice.call(window.photoCollection).indexOf(target.parentNode);
-      window.preview.pasteNewData(window.x[newArray]);
+      window.preview.pasteNewData(window.data[newArray]);
     }
 
 

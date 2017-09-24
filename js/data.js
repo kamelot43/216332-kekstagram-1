@@ -13,7 +13,7 @@
     'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
     'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
-
+/*
   // получить случайное значение из диапазона от мин до макс
   function returnRandomValue(min, max) {
     return min + Math.floor(Math.random() * (max + 1 - min));
@@ -61,5 +61,15 @@
       return photos;
     }
   };
-  window.x = window.data.createPhoto(PICTURES_VALUE);
+*/
+  var onSuccess = function (data) {
+    // В переменной responseRequest содержится массив объявлений ,загруженный по сети
+    window.data = data;
+    window.pictures.renderFragment(data);
+  };
+
+
+  // window.x = window.data.createPhoto(PICTURES_VALUE);
+  // window.backend.load(onSuccess, window.backend.error);
+  window.backend.load(onSuccess, window.backend.error);
 })();

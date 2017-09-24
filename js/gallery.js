@@ -5,6 +5,7 @@
   var ENTER_KEYCODE = 13;
   var closeElement = document.querySelector('.gallery-overlay-close');
   var uploadForm = document.querySelector('#upload-select-image');
+//  window.pictures = document.querySelector('.pictures');
 
   // закрытие окна
   var onPopupEscPress = function (evt) {
@@ -38,7 +39,7 @@
 
 
   // Действие при клике мышкой на фотографии
-  window.pictures.addEventListener('click', function (evt) {
+  window.picturesContainer.addEventListener('click', function (evt) {
     var target = evt.target;
     if (target.parentNode.classList.contains('picture')) {
       evt.preventDefault();
@@ -48,7 +49,7 @@
   });
 
   // Действие при нажатии кнопки на фотографии
-  window.pictures.addEventListener('keydown', function (evt) {
+  window.picturesContainer.addEventListener('keydown', function (evt) {
     var target = evt.target.childNodes[0];
     if (target.parentNode.classList.contains('picture') && evt.keyCode === 13) {
       evt.preventDefault();
