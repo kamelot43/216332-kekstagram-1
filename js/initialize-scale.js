@@ -13,6 +13,7 @@
       resizeValue.value = newResizeValue + '%';
       return newResizeValue;
     }
+    return resizeValue.value;
   }
 
   function reduceResizeValue() {
@@ -21,6 +22,7 @@
       resizeValue.value = newResizeValue + '%';
       return newResizeValue;
     }
+    return resizeValue.value;
   }
 
   window.initializeScale = function (element, callback) {

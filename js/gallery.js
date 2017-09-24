@@ -4,8 +4,6 @@
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
   var closeElement = document.querySelector('.gallery-overlay-close');
-  var uploadForm = document.querySelector('#upload-select-image');
-//  window.pictures = document.querySelector('.pictures');
 
   // закрытие окна
   var onPopupEscPress = function (evt) {
@@ -63,6 +61,7 @@
   var levelVal = document.querySelector('.upload-effect-level-val');
 
 
+  // Реакция на перетаскивание ползунка фильтра
   levelPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -88,12 +87,13 @@
       function findRatio(param) {
         var percent = ((levelPin.offsetLeft - shift.x) / maxClientX) * 100;
         var result = percent.toFixed(2);
-        if (param == 'effect-phobos') {
-          var result = (3 * result) / 100;
-          return result.toFixed(1) + 'px';
-        } else if (param == 'effect-heat') {
-          var result = (300 * result) / 100;
-          return result.toFixed(2) + '%';
+        var newResult;
+        if (param === 'effect-phobos') {
+          newResult = (3 * result) / 100;
+          return newResult.toFixed(1) + 'px';
+        } else if (param === 'effect-heat') {
+          newResult = (300 * result) / 100;
+          return newResult.toFixed(2) + '%';
         }
         return result + '%';
       }
@@ -102,15 +102,15 @@
       if ((levelPin.offsetLeft - shift.x) <= maxClientX && (levelPin.offsetLeft - shift.x) >= minClientX) {
         levelPin.style.left = (levelPin.offsetLeft - shift.x) + 'px';
         levelVal.style.width = (levelPin.offsetLeft - shift.x) + 'px';
-        if (window.y == 'effect-sepia') {
+        if (window.y === 'effect-sepia') {
           window.effectPreview.style.filter = 'sepia' + '\(' + findRatio(window.y) + '\)';
-        } else if (window.y == 'effect-chrome') {
+        } else if (window.y === 'effect-chrome') {
           window.effectPreview.style.filter = 'grayscale' + '\(' + findRatio(window.y) + '\)';
-        } else if (window.y == 'effect-marvin') {
+        } else if (window.y === 'effect-marvin') {
           window.effectPreview.style.filter = 'invert' + '\(' + findRatio(window.y) + '\)';
-        } else if (window.y == 'effect-phobos') {
+        } else if (window.y === 'effect-phobos') {
           window.effectPreview.style.filter = 'blur' + '\(' + findRatio(window.y) + '\)';
-        } else if (window.y == 'effect-heat') {
+        } else if (window.y === 'effect-heat') {
           window.effectPreview.style.filter = 'brightness' + '\(' + findRatio(window.y) + '\)';
         }
 

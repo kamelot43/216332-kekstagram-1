@@ -4,9 +4,6 @@
 
   var MAX_HASHTAGS_QUANTITY = 5;
   var MAX_HASHTAG_LENGTH = 20;
-  var STEP = 25;
-  var RESIZE_MIN = 25;
-  var RESIZE_MAX = 100;
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
@@ -18,9 +15,6 @@
   var uploadDescription = uploadForm.querySelector('.upload-form-description');
   var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
   var scaleElement = document.querySelector('.upload-resize-controls');
-  var resizeDec = uploadForm.querySelector('.upload-resize-controls-button-dec');
-  var resizeInc = uploadForm.querySelector('.upload-resize-controls-button-inc');
-  var resizeValue = uploadForm.querySelector('.upload-resize-controls-value');
   window.effectPreview = uploadForm.querySelector('.effect-image-preview');
   var uploadHashtags = uploadForm.querySelector('.upload-form-hashtags');
   var uploadEffect = uploadForm.querySelector('.upload-effect-level');
@@ -88,7 +82,7 @@
   // масштабирование
     resizeImage: function (element) {
       var x = 'scale' + '\(' + (element / 100) + '\)';
-      effectPreview.style.transform = x;
+      window.effectPreview.style.transform = x;
     },
 
     resetResizer: function () {
@@ -103,7 +97,7 @@
       levelVal.style.width = '20%';
       if (window.effectPreview.className !== 'effect-image-preview') {
         window.effectPreview.setAttribute('class', 'effect-image-preview');
-        effectPreview.style.filter = '';
+        window.effectPreview.style.filter = '';
       }
       window.effectPreview.className += ' ' + param;
     },
@@ -111,19 +105,19 @@
 
   // Установить значение фильтров по умолчанию
     setDefaultFilterValue: function (param) {
-      if (param == 'effect-sepia') {
+      if (param === 'effect-sepia') {
         uploadEffect.classList.remove('hidden');
         window.effectPreview.style.filter = 'sepia(20%)';
-      } else if (param == 'effect-chrome') {
+      } else if (param === 'effect-chrome') {
         uploadEffect.classList.remove('hidden');
         window.effectPreview.style.filter = 'grayscale(20%)';
-      } else if (param == 'effect-marvin') {
+      } else if (param === 'effect-marvin') {
         uploadEffect.classList.remove('hidden');
         window.effectPreview.style.filter = 'invert(20%)';
-      } else if (param == 'effect-phobos') {
+      } else if (param === 'effect-phobos') {
         uploadEffect.classList.remove('hidden');
         window.effectPreview.style.filter = 'blur(0.6px)';
-      } else if (param == 'effect-heat') {
+      } else if (param === 'effect-heat') {
         uploadEffect.classList.remove('hidden');
         window.effectPreview.style.filter = 'brightness(60%)';
       } else {
@@ -140,8 +134,8 @@
             return true;
           }
         }
-        return false;
       }
+      return false;
     },
 
   // Измерить длину хештега

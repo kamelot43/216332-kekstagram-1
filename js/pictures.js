@@ -25,7 +25,7 @@
       for (var i = 0; i < array.length; i++) {
         fragment.appendChild(window.pictures.renderPhoto(array[i]));
       }
-      picturesContainer.appendChild(fragment);
+      window.picturesContainer.appendChild(fragment);
       window.photoCollection = document.querySelectorAll('.picture');
     }
   };
