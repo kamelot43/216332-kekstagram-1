@@ -12,9 +12,9 @@
     },
 
     // функция отрисовки текущей фотографии
-    renderCurrentPhoto: function (target) {
+    renderCurrentPhoto: function (target, array) {
       var newArray = Array.prototype.slice.call(window.photoCollection).indexOf(target.parentNode);
-      window.preview.pasteNewData(window.data[newArray]);
+      window.preview.pasteNewData(array[newArray]);
     }
 
 

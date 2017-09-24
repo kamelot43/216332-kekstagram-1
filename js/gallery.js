@@ -41,8 +41,13 @@
     var target = evt.target;
     if (target.parentNode.classList.contains('picture')) {
       evt.preventDefault();
-      window.preview.renderCurrentPhoto(target);
+      if (!window.z) {
+        window.preview.renderCurrentPhoto(target, window.data);
+      } else {
+        window.preview.renderCurrentPhoto(target, window.z);
+      }
       window.openPopup();
+
     }
   });
 
@@ -51,7 +56,11 @@
     var target = evt.target.childNodes[0];
     if (target.parentNode.classList.contains('picture') && evt.keyCode === 13) {
       evt.preventDefault();
-      window.preview.renderCurrentPhoto(target);
+      if (!window.z) {
+        window.preview.renderCurrentPhoto(target, window.data);
+      } else {
+        window.preview.renderCurrentPhoto(target, window.z);
+      }
       window.openPopup();
     }
   });
