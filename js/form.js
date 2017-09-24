@@ -31,6 +31,9 @@
   var levelPin = document.querySelector('.upload-effect-level-pin');
   var levelVal = document.querySelector('.upload-effect-level-val');
 
+  // наложение фильтров
+  var effectControls = uploadForm.querySelector('.upload-effect-controls');
+
 
   var onOverlayEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE && uploadDescription !== document.activeElement) {
@@ -38,16 +41,17 @@
     }
   };
 
+  // Функиця открытия окна загрузки фото
   window.openOverlay = function () {
     document.addEventListener('keydown', onOverlayEscPress);
   };
 
-    // Функция закрытия окна диалога
+  // Функция закрытия окна загрузки фото
   window.closeOverlay = function () {
     uploadImage.classList.remove('hidden');
     uploadOverlay.classList.add('hidden');
-    setOriginalFilter();
-    resetResizer();
+    window.form.setOriginalFilter();
+    window.form.resetResizer();
     uploadEffect.classList.add('hidden');
     document.removeEventListener('keydown', onOverlayEscPress);
   };
@@ -70,131 +74,130 @@
     }
   });
 
-
-  // валидация формы
-
-  // масштабирование
-  function resizeImage(element) {
-    var x = 'scale' + '\(' + (element / 100) + '\)';
-    effectPreview.style.transform = x;
-  }
-
-  function resetResizer() {
-    resizeValue.value = '100%';
-    window.effectPreview.style.transform = '';
-  }
-
-  // наложение фильтров
-  var effectControls = uploadForm.querySelector('.upload-effect-controls');
-
-  // Установить оригинальный фильтр
-  function setOriginalFilter(param) {
-    levelPin.style.left = '20%';
-    levelVal.style.width = '20%';
-    if (window.effectPreview.className !== 'effect-image-preview') {
-      window.effectPreview.setAttribute('class', 'effect-image-preview');
-      effectPreview.style.filter = '';
-    }
-    window.effectPreview.className += ' ' + param;
-  }
-
   // по умолчанию скрыть ползунок
   uploadEffect.classList.add('hidden');
-
-  // Установить значение фильтров по умолчанию
-  function setDefaultFilterValue(param) {
-    if (param == 'effect-sepia') {
-      uploadEffect.classList.remove('hidden');
-      window.effectPreview.style.filter = 'sepia(20%)';
-    } else if (param == 'effect-chrome') {
-      uploadEffect.classList.remove('hidden');
-      window.effectPreview.style.filter = 'grayscale(20%)';
-    } else if (param == 'effect-marvin') {
-      uploadEffect.classList.remove('hidden');
-      window.effectPreview.style.filter = 'invert(20%)';
-    } else if (param == 'effect-phobos') {
-      uploadEffect.classList.remove('hidden');
-      window.effectPreview.style.filter = 'blur(0.6px)';
-    } else if (param == 'effect-heat') {
-      uploadEffect.classList.remove('hidden');
-      window.effectPreview.style.filter = 'brightness(60%)';
-    } else {
-      uploadEffect.classList.add('hidden');
-    }
-  }
-
 
   // Устранение бага с исчезновение фильтра
   uploadEffect.addEventListener('click', function (evt) {
     evt.stopPropagation();
   });
 
+  window.form = {
+  // валидация формы
+
+  // масштабирование
+    resizeImage: function (element) {
+      var x = 'scale' + '\(' + (element / 100) + '\)';
+      effectPreview.style.transform = x;
+    },
+
+    resetResizer: function () {
+      resizeValue.value = '100%';
+      window.effectPreview.style.transform = '';
+    },
+
+
+  // Установить оригинальный фильтр
+    setOriginalFilter: function (param) {
+      levelPin.style.left = '20%';
+      levelVal.style.width = '20%';
+      if (window.effectPreview.className !== 'effect-image-preview') {
+        window.effectPreview.setAttribute('class', 'effect-image-preview');
+        effectPreview.style.filter = '';
+      }
+      window.effectPreview.className += ' ' + param;
+    },
+
+
+  // Установить значение фильтров по умолчанию
+    setDefaultFilterValue: function (param) {
+      if (param == 'effect-sepia') {
+        uploadEffect.classList.remove('hidden');
+        window.effectPreview.style.filter = 'sepia(20%)';
+      } else if (param == 'effect-chrome') {
+        uploadEffect.classList.remove('hidden');
+        window.effectPreview.style.filter = 'grayscale(20%)';
+      } else if (param == 'effect-marvin') {
+        uploadEffect.classList.remove('hidden');
+        window.effectPreview.style.filter = 'invert(20%)';
+      } else if (param == 'effect-phobos') {
+        uploadEffect.classList.remove('hidden');
+        window.effectPreview.style.filter = 'blur(0.6px)';
+      } else if (param == 'effect-heat') {
+        uploadEffect.classList.remove('hidden');
+        window.effectPreview.style.filter = 'brightness(60%)';
+      } else {
+        uploadEffect.classList.add('hidden');
+      }
+    },
+
+
   // Найти одинаковые хештеги
-  var findSameElement = function (array) {
-    for (var i = 0; i < array.length; i++) {
-      for (var j = i + 1; j < array.length; j++) {
-        if (array[j] === array[i]) {
-          return true;
+    findSameElement: function (array) {
+      for (var i = 0; i < array.length; i++) {
+        for (var j = i + 1; j < array.length; j++) {
+          if (array[j] === array[i]) {
+            return true;
+          }
+        }
+        return false;
+      }
+    },
+
+  // Измерить длину хештега
+    findHashTagLength: function (array) {
+      var flag = false;
+      for (var i = 0; i < array.length; i++) {
+        if (array[i].length > MAX_HASHTAG_LENGTH) {
+          flag = true;
         }
       }
-      return false;
+      return flag;
+    },
+
+  // Очистка формы после отправки
+    resetForm: function (form) {
+      form.reset();
+      window.form.setOriginalFilter();
+      window.form.resetResizer();
+      window.closeOverlay();
+    },
+
+
+    validateHashTags: function (input) {
+      var newArrays = input.value.split(' ');
+      for (var i = 0; i < newArrays.length; i++) {
+        if (newArrays[i].charAt(0) !== '#' && newArrays[i].indexOf(' ') === -1 && uploadHashtags.value !== '') {
+          input.classList.add('upload-message-error');
+          input.setCustomValidity('#хештег должен начинаться с символа # и не должен содержать пробел');
+
+        } else if (newArrays[i].indexOf('#', 1) !== -1) {
+          input.classList.add('upload-message-error');
+          input.setCustomValidity('#хештеги должны быть разделены пробелом');
+
+        } else if (window.form.findHashTagLength(newArrays)) {
+          input.classList.add('upload-message-error');
+          input.setCustomValidity('длина #хештега превышает допустимую');
+
+        } else if (window.form.findSameElement(newArrays)) {
+          input.classList.add('upload-message-error');
+          input.setCustomValidity('#хештеги повторяются');
+
+        } else if (newArrays.length > MAX_HASHTAGS_QUANTITY) {
+          input.classList.add('upload-message-error');
+          input.setCustomValidity('указано более 5 #хештегов');
+
+        } else {
+          input.setCustomValidity('');
+          input.classList.remove('upload-message-error');
+
+        }
+      }
     }
   };
 
-  // Измерить длину хештега
-  function findHashTagLength(array) {
-    var flag = false;
-    for (var i = 0; i < array.length; i++) {
-      if (array[i].length > MAX_HASHTAG_LENGTH) {
-        flag = true;
-      }
-    }
-    return flag;
-  }
-
-  // Очистка формы после отправки
-  function resetForm(form) {
-    form.reset();
-    setOriginalFilter();
-    resetResizer();
-    window.closeOverlay();
-
-  }
-
-
-  function validateHashTags(input) {
-    var newArrays = input.value.split(' ');
-    for (var i = 0; i < newArrays.length; i++) {
-      if (newArrays[i].charAt(0) !== '#' && newArrays[i].indexOf(' ') === -1) {
-        input.classList.add('upload-message-error');
-        input.setCustomValidity('#хештег должен начинаться с символа # и не должен содержать пробел');
-
-      } else if (newArrays[i].indexOf('#', 1) !== -1) {
-        input.classList.add('upload-message-error');
-        input.setCustomValidity('#хештеги должны быть разделены пробелом');
-
-      } else if (findHashTagLength(newArrays)) {
-        input.classList.add('upload-message-error');
-        input.setCustomValidity('длина #хештега превышает допустимую');
-
-      } else if (findSameElement(newArrays)) {
-        input.classList.add('upload-message-error');
-        input.setCustomValidity('#хештеги повторяются');
-
-      } else if (newArrays.length > MAX_HASHTAGS_QUANTITY) {
-        input.classList.add('upload-message-error');
-        input.setCustomValidity('указано более 5 #хештегов');
-
-      } else {
-        input.setCustomValidity('');
-        input.classList.remove('upload-message-error');
-
-      }
-    }
-  }
-
   uploadHashtags.addEventListener('change', function () {
-    validateHashTags(uploadHashtags);
+    window.form.validateHashTags(uploadHashtags);
   });
 
 
@@ -204,7 +207,7 @@
       window.backend.save(
           new FormData(uploadForm),
           function () {
-            resetForm(uploadForm);
+            window.form.resetForm(uploadForm);
           },
           window.backend.error
       );
@@ -212,17 +215,11 @@
     }
   });
 
-  /* uploadForm.addEventListener('submit', function (evt) {
-    evt.preventDefault();
-    resetForm(uploadForm);
-  });
-  */
-
   // module5-task3
-
-  window.initializeScale(scaleElement, resizeImage);
-  window.initializeFilters(effectControls, setOriginalFilter);
-  window.initializeFilters(effectControls, setDefaultFilterValue);
+  // Изменять динамически фильтр, его стандартное значение и глубину
+  window.initializeScale(scaleElement, window.form.resizeImage);
+  window.initializeFilters(effectControls, window.form.setOriginalFilter);
+  window.initializeFilters(effectControls, window.form.setDefaultFilterValue);
 
 
   // Отправка по сети данных формы методом AJAX
@@ -230,7 +227,7 @@
     window.backend.save(
         new FormData(uploadForm),
         function () {
-          resetForm(uploadForm);
+          window.form.resetForm(uploadForm);
         },
         window.backend.error
     );
