@@ -48,7 +48,9 @@
 
   filterElement.addEventListener('click', function (evt) {
     window.filterId = evt.target.id;
-    window.filter.sortById(window.filterId);
+    window.debounce(function () {
+      window.filter.sortById(window.filterId);
+    });
   });
 
 })();
