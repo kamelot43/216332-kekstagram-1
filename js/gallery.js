@@ -41,10 +41,10 @@
     var target = evt.target;
     if (target.parentNode.classList.contains('picture')) {
       evt.preventDefault();
-      if (!window.z) {
+      if (!window.filterArray) {
         window.preview.renderCurrentPhoto(target, window.data);
       } else {
-        window.preview.renderCurrentPhoto(target, window.z);
+        window.preview.renderCurrentPhoto(target, window.filterArray);
       }
       window.openPopup();
 
@@ -56,10 +56,10 @@
     var target = evt.target.childNodes[0];
     if (target.parentNode.classList.contains('picture') && evt.keyCode === 13) {
       evt.preventDefault();
-      if (!window.z) {
+      if (!window.filterArray) {
         window.preview.renderCurrentPhoto(target, window.data);
       } else {
-        window.preview.renderCurrentPhoto(target, window.z);
+        window.preview.renderCurrentPhoto(target, window.filterArray);
       }
       window.openPopup();
     }

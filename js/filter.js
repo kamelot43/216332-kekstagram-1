@@ -23,29 +23,32 @@
       return Math.random() - 0.5;
     },
 
+    sort: function (filter) {
+      window.pictures.deletePhoto();
+      window.filterArray = window.filter.createSortArray(window.data, filter);
+      window.pictures.renderFragment(window.filterArray);
+    },
+
     sortById: function (param) {
-
-      if (param == 'filter-popular') {
-        window.pictures.deletePhoto();
-        window.z = window.filter.createSortArray(window.data, window.filter.sortByLikes);
-        window.pictures.renderFragment(window.z);
-      } else if (param == 'filter-discussed') {
-        window.pictures.deletePhoto();
-        window.z = window.filter.createSortArray(window.data, window.filter.sortByComments);
-        window.pictures.renderFragment(window.z);
-      } else if (param == 'filter-random') {
-        window.pictures.deletePhoto();
-        window.z = window.filter.createSortArray(window.data, window.filter.compareRandom);
-        window.pictures.renderFragment(window.z);
-      } else {
-        window.pictures.deletePhoto();
-        window.pictures.renderFragment(window.data);
+      switch (param) {
+        case 'filter-popular':
+          window.filter.sort(window.filter.sortByLikes);
+          break;
+        case 'filter-discussed':
+          window.filter.sort(window.filter.sortByComments);
+          break;
+        case 'filter-random':
+          window.filter.sort(window.filter.compareRandom);
+          break;
+        default:
+          window.pictures.deletePhoto();
+          window.pictures.renderFragment(window.data);
+          break;
       }
-
     }
   };
 
-
+  // Фильтрация при выборе фильтра
   filterElement.addEventListener('click', function (evt) {
     window.filterId = evt.target.id;
     window.debounce(function () {
